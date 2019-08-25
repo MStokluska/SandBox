@@ -1,9 +1,7 @@
-module.exports = {
+const options = {
     development: {
         client: 'pg',
         connection: {
-            host: process.env.DB_HOST || "localhost",
-            port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
             user: "testuser",
             password: "testpassword",
             database: "todos"
@@ -15,14 +13,8 @@ module.exports = {
             directory: __dirname + '/db/seeds',
         },
     },
-    production: {
-        client: 'pg',
-        connection: process.env.DATABASE_URL,
-        migrations: {
-            directory: __dirname + '/db/migrations',
-        },
-        seeds: {
-            directory: __dirname + '/db/seeds/production',
-        },
-    },
 };
+
+var environment = process.env.NODE_ENV || 'development';
+var config = options[environment];
+module.exports = require('knex')(config);
