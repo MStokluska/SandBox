@@ -1,0 +1,17 @@
+{
+  "name": "typescript",
+  "version": "1.0.0",
+  "description": "TypeScript tutorial",
+  "main": "index.js",
+  "dependencies": {
+    "lite-server": "^2.5.4",
+    "typescript": "^3.6.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
+  },
+  "author": "Michal Stokluska",
+  "license": "ISC"
+}
