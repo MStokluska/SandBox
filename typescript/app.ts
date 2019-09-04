@@ -79,53 +79,116 @@
 //     throw new Error('an error!')
 // }
 
-const echo = (data: any) => data;
+// const echo = (data: any) => data;
 
-console.log(echo("Michael"));
-console.log(echo(34));
+// console.log(echo("Michael"));
+// console.log(echo(34));
 
-const genericEcho = <T>(data: any) => data;
+// const genericEcho = <T>(data: any) => data;
 
-console.log(genericEcho("Michael").length);
-console.log(genericEcho<number>(34))
+// console.log(genericEcho("Michael").length);
+// console.log(genericEcho<number>(34))
 
-// built-in generics
+// // built-in generics
 
-const testResults: Array<number> = [1.94, 2, 5.33]
+// const testResults: Array<number> = [1.94, 2, 5.33]
 
-testResults.push(20);
+// testResults.push(20);
 
-console.log(testResults)
+// console.log(testResults)
 
-// arrays
-const printAll = <T>(args: T[]) => {
-    args.forEach((element) => console.log(element));
-}
+// // arrays
+// const printAll = <T>(args: T[]) => {
+//     args.forEach((element) => console.log(element));
+// }
 
-printAll<string>(["Apple", "Banana"])
+// printAll<string>(["Apple", "Banana"])
 
-// generic types
-const echo2: <T>(data: T) => T = genericEcho;
+// // generic types
+// const echo2: <T>(data: T) => T = genericEcho;
 
-console.log(echo2<string>("Something"));
+// console.log(echo2<string>("Something"));
 
-// generic classes
+// // generic classes
 
-class SimpleMath<T extends number | string> {
-    baseValue: T;
-    multiplyValue: T;
-    calculate(): number {
-        return +this.baseValue * +this.multiplyValue;
+// class SimpleMath<T extends number | string> {
+//     baseValue: T;
+//     multiplyValue: T;
+//     calculate(): number {
+//         return +this.baseValue * +this.multiplyValue;
+//     }
+// }
+
+// const simpleMath = new SimpleMath<number | string>();
+// simpleMath.baseValue = 10;
+// simpleMath.multiplyValue = "20";
+// console.log(simpleMath.calculate());
+
+// const simpleMath2 = new SimpleMath<string>();
+
+// console.log(simpleMath2.baseValue = "something");
+// console.log(simpleMath2.multiplyValue = "something else");
+
+// Decorators
+
+const logged = (constructorFn: Function) => console.log(constructorFn) 
+
+@logged
+class Person {
+    constructor() {
+        console.log("Hi")
     }
 }
 
-const simpleMath = new SimpleMath<number | string>();
-simpleMath.baseValue = 10;
-simpleMath.multiplyValue = "20";
-console.log(simpleMath.calculate());
+// Factory
 
-const simpleMath2 = new SimpleMath<string>();
+const logging = (value: boolean) => value ? logged : null;
 
-console.log(simpleMath2.baseValue = "something");
-console.log(simpleMath2.multiplyValue = "something else");
+@logging(true)
+class Car {
+}
+
+// Advanced
+
+const printable = (constructorFn: Function) => {
+    constructorFn.prototype.print = () => console.log(this)
+}
+
+@printable
+class Plant {
+    name = "green plant";
+}
+
+const plant = new Plant();
+
+(<any>plant).print();
+
+// param decorator 
+
+const printInfo = (target: any, methodName: string, paramIndex: number) => {
+    console.log("Target: ", target);
+    console.log("method Name: ", methodName);
+    console.log("paramIndex: ", paramIndex);
+}
+
+class Course {
+    name: string;
+
+    constructor(name?: string) {
+        this.name = name;
+    }
+
+    printStudentNumber(mode: string, @printInfo printAll: boolean){
+        if (printAll) {
+            console.log(10000)
+        } else {
+            console.log(20000)
+        }
+    }
+}
+
+const course = new Course("Super Course");
+
+course.printStudentNumber("anything", true);
+course.printStudentNumber("anything", false)
 
